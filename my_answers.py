@@ -1,6 +1,7 @@
 import numpy as np
 import string
 import math
+import re
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
@@ -36,9 +37,7 @@ def build_part1_RNN(window_size):
 ### TODO: return the text input with only ascii lowercase and the punctuation given below included.
 def cleaned_text(text):
     punctuation = ['!', ',', '.', ':', ';', '?']
-    for c in string.punctuation:
-        if c not in punctuation:
-            text = text.replace(c,"")
+    text = re.sub(r'[^a-z!,.:;?]', ' ', text)
 
     return text
 
@@ -48,13 +47,14 @@ def window_transform_text(text, window_size, step_size):
     inputs = []
     outputs = []
     total_input = len(text)
-    p = int(math.ceil(total_input/step_size))
-    print(len(text))
-    print(range(0, p))
-    for step in range(0, p):
-        if total_input > window_size+(step*step_size): 
-            inputs.append(text[step*step_size:window_size+(step*step_size)])
-            outputs.append(text[window_size+(step*step_size)+1])
+    p = int(math.ceil((total_input-window_size)/step_size))
+    #573681
+    #114717
+    #print(total_input)
+    #print(p)
+    for step in range(0, p-1):
+        inputs.append(text[step*step_size:window_size+(step*step_size)])
+        outputs.append(text[window_size+(step*step_size)])
 
 
     return inputs,outputs
