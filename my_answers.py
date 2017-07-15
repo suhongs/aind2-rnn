@@ -52,7 +52,7 @@ def window_transform_text(text, window_size, step_size):
     #114717
     #print(total_input)
     #print(p)
-    for step in range(0, p-1):
+    for step in range(0, p):
         inputs.append(text[step*step_size:window_size+(step*step_size)])
         outputs.append(text[window_size+(step*step_size)])
 
